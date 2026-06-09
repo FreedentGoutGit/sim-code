@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  px4_ros2_sim:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: px4_ros2_sim
+    privileged: true
+    shm_size: '2gb' # Enable shared memory for GUI/Gazebo rendering performance
+    ports:
+      - "8080:8080" # noVNC web interface
+      - "15555:15555/udp" # Micro XRCE-DDS Agent UDP port
+      - "14540:14540/udp" # MAVLink port for Drone 1 (if connecting QGroundControl from host)
+      - "14541:14541/udp" # MAVLink port for Drone 2
+      - "14542:14542/udp" # MAVLink port for Drone 3
+    volumes:
+      # Map the custom ROS2 package source code to the container.
+      # By only mapping the specific source package (instead of the whole workspace),
+      # we keep compiler artifacts (build/, install/, log/) and the system package px4_msgs
+      # inside the container's fast local disk. This prevents slow Google Drive sync operations.
+      - ./ros2_ws/src/swarm_control:/home/developer/ros2_ws/src/swarm_control
+    environment:
+      - DISPLAY=:1
+      - RESOLUTION=1280x800
+    restart: unless-stopped
