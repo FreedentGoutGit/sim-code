@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo "=== Cleaning up stale X11 lock files ==="
+sudo rm -f /tmp/.X*-lock /tmp/.X11-unix/X*
+
 echo "=== Starting Xvfb (Virtual Display :1) ==="
 Xvfb :1 -screen 0 ${RESOLUTION}x24 &
 sleep 2
@@ -18,10 +21,9 @@ echo "=== Starting noVNC Web GUI (Port 8080) ==="
 /usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8080 &
 sleep 2
 
-echo "=== Building ROS 2 Workspace ==="
+echo "=== Sourcing ROS 2 Workspace ==="
 source /opt/ros/humble/setup.bash
 cd /home/developer/ros2_ws
-colcon build --symlink-install
 source install/setup.bash
 
 echo "=== Starting Micro XRCE-DDS Agent ==="
@@ -45,23 +47,23 @@ export PX4_UXRCE_DDS_NS=px4_1
 sleep 15
 
 # Drone 2 (Standalone Client)
-# Spawns at (0, 2)
-echo "Launching Drone 2 (px4_2) at (0, 2)..."
+# Spawns at (0, 8)
+echo "Launching Drone 2 (px4_2) at (0, 8)..."
 export PX4_GZ_STANDALONE=1
 export PX4_SYS_AUTOSTART=4001
 export PX4_SIM_MODEL=gz_x500
-export PX4_GZ_MODEL_POSE="0,2"
+export PX4_GZ_MODEL_POSE="0,8"
 export PX4_UXRCE_DDS_NS=px4_2
 ./build/px4_sitl_default/bin/px4 -i 2 > /tmp/px4_2.log 2>&1 &
 sleep 2
 
 # Drone 3 (Standalone Client)
-# Spawns at (0, 4)
-echo "Launching Drone 3 (px4_3) at (0, 4)..."
+# Spawns at (0, 16)
+echo "Launching Drone 3 (px4_3) at (0, 16)..."
 export PX4_GZ_STANDALONE=1
 export PX4_SYS_AUTOSTART=4001
 export PX4_SIM_MODEL=gz_x500
-export PX4_GZ_MODEL_POSE="0,4"
+export PX4_GZ_MODEL_POSE="0,16"
 export PX4_UXRCE_DDS_NS=px4_3
 ./build/px4_sitl_default/bin/px4 -i 3 > /tmp/px4_3.log 2>&1 &
 

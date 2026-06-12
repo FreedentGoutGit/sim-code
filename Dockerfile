@@ -86,7 +86,7 @@ RUN mkdir -p /home/developer/ros2_ws/src
 RUN git clone -b release/1.14 https://github.com/PX4/px4_msgs.git /home/developer/ros2_ws/src/px4_msgs
 
 # Build the base workspace (only px4_msgs initially)
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && cd /home/developer/ros2_ws && colcon build"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && cd /home/developer/ros2_ws && colcon build --symlink-install"
 
 # Configure environment variables for noVNC, Gazebo, and ROS2
 ENV DISPLAY=:1

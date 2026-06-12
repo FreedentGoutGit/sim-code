@@ -198,13 +198,13 @@ class SwarmController(Node):
 
         elif self.state == "FORMATION":
             # Fly drones into a forward-facing V-formation:
-            # - Drone 1 (Lead): Move 5m forward, up to 3m altitude -> [5.0, 2.0, -3.0] relative to spawn
-            # - Drone 2 (Left): Move 3m forward, left -> [3.0, -2.0, -3.0] relative to spawn
-            # - Drone 3 (Right): Move 3m forward, right -> [3.0, 0.0, -3.0] relative to spawn
+            # - Drone 1 (Lead): Move 5m forward, up to 3m altitude -> [20.0, 8.0, -12.0] relative to spawn
+            # - Drone 2 (Left): Move 3m forward, left -> [12.0, -8.0, -12.0] relative to spawn
+            # - Drone 3 (Right): Move 3m forward, right -> [12.0, 0.0, -12.0] relative to spawn
             # (Calculated to form a triangle pointing North)
-            self.drones[0].publish_trajectory_setpoint(5.0, 2.0, -3.0)
-            self.drones[1].publish_trajectory_setpoint(3.0, -2.0, -3.0)
-            self.drones[2].publish_trajectory_setpoint(3.0, 0.0, -3.0)
+            self.drones[0].publish_trajectory_setpoint(20.0, 8.0, -12.0)
+            self.drones[1].publish_trajectory_setpoint(12.0, -8.0, -12.0)
+            self.drones[2].publish_trajectory_setpoint(12.0, 0.0, -12.0)
             
             # Maintain formation for 20 seconds (200 ticks)
             if self.state_counter > 200:
